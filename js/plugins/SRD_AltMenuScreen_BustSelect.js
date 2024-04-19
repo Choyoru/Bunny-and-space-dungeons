@@ -288,15 +288,21 @@
 	};
 	if(!ImageManager.loadSumRndmDdeMB) {
 		ImageManager.loadSumRndmDdeMB = function(filename, hue) {
-			if($gameVariables.value(5) < 25) {
-				return this.loadBitmap('img/SumRndmDde/menu/',$gameVariables.value(4)+'_1', hue, true)
+			return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_base1', hue, true);
+			/*return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_gloves1', hue, true);
+			return  this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_under1', hue, true);
+			img_bust += this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_boots1', hue, true);
+			img_bust += this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_clothes1', hue, true);
+			return img_bust;*/
+			/*if($gameVariables.value(5) < 25) {
+				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_1', hue, true)
 			}else if($gameVariables.value(5) < 75) {
-				return this.loadBitmap('img/SumRndmDde/menu/',$gameVariables.value(4)+'_2', hue, true)
+				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_2', hue, true)
 			}else if($gameVariables.value(5) < 100) {
-				return this.loadBitmap('img/SumRndmDde/menu/',$gameVariables.value(4)+'_3', hue, true)
+				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_3', hue, true)
 			}else{
-				return this.loadBitmap('img/SumRndmDde/menu/',$gameVariables.value(4)+'_4', hue, true)
-			}
+				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_4', hue, true)
+			}*/
 			//return this.loadBitmap('img/SumRndmDde/menu/', filename, hue, true);
 		};
 	}
