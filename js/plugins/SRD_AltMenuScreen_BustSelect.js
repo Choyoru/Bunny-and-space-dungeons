@@ -286,26 +286,15 @@
 		}
 		return true;
 	};
-	if(!ImageManager.loadSumRndmDdeMB) {
-		ImageManager.loadSumRndmDdeMB = function(filename, hue) {
-			return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_base1', hue, true);
-			/*return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_gloves1', hue, true);
-			return  this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_under1', hue, true);
-			img_bust += this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_boots1', hue, true);
-			img_bust += this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_clothes1', hue, true);
-			return img_bust;*/
-			/*if($gameVariables.value(5) < 25) {
-				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_1', hue, true)
-			}else if($gameVariables.value(5) < 75) {
-				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_2', hue, true)
-			}else if($gameVariables.value(5) < 100) {
-				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_3', hue, true)
-			}else{
-				return this.loadBitmap('img/pictures/',$gameVariables.value(4)+'_4', hue, true)
-			}*/
-			//return this.loadBitmap('img/SumRndmDde/menu/', filename, hue, true);
-		};
-	}
+
+	Window_Base.prototype.HorGaugeColor1 = function() {
+        return this.textColor(6);
+    };
+    
+    Window_Base.prototype.HorGaugeColor2 = function() {
+        return this.textColor(14);
+    };
+	
 	var _Scene_Menu_create = Scene_Menu.prototype.create;
 	Scene_Menu.prototype.create = function() {
 		_Scene_Menu_create.call(this);
@@ -355,7 +344,7 @@
 		_Window_MenuStatus_loadImages.call(this);
 		$gameParty.members().forEach(function(actor) {
 			if(actor.actor().ams_bs_bust) {
-				ImageManager.loadSumRndmDdeMB(actor.actor().ams_bs_bust);
+				//ImageManager.loadSumRndmDdeMB(actor.actor().ams_bs_bust);
 			}
 		}, this);
 	};
@@ -377,23 +366,9 @@
 		//this.drawItemStatus(index);
 	};
 	Window_MenuStatus.prototype.drawItemImage = function(index) {
-		var actor = $gameParty.members()[index];
-		var rect = this.itemRect(index);
-		this.changePaintOpacity(actor.isBattleMember());
-		var x = (actor.actor().ams_bs_x) ? actor.actor().ams_bs_x : bustX;
-		var y = (actor.actor().ams_bs_y) ? actor.actor().ams_bs_y : bustY;
-		var w = (actor.actor().ams_bs_w) ? actor.actor().ams_bs_w : -1;
-		var h = (actor.actor().ams_bs_h) ? actor.actor().ams_bs_h : -1;
-		this.drawBust(actor, rect.x + x, rect.y + y, w, h);
-		this.changePaintOpacity(true);
-	};
-	Window_MenuStatus.prototype.drawBust = function(actor, x, y, width, height) {
-		var bitmap = ImageManager.loadSumRndmDdeMB(actor.actor().ams_bs_bust);
-		bitmap.addLoadListener(function() {
-			width = (width < 0) ? bitmap.width : width;
-			height = (height < 0) ? bitmap.height : height;
-			this.contents.blt(bitmap, 0, 0, bitmap.width, bitmap.height, x, y, width, height);
-		}.bind(this));
+		var x = 120;
+		var y = 0;
+		showbust(x,y).forEach((element) => this.addChild(element));
 	};
 	var _Window_MenuStatus_deselect = Window_MenuStatus.prototype.deselect;
 	Window_MenuStatus.prototype.deselect = function() {
@@ -426,18 +401,17 @@
 	Window_HPWindow.prototype.refresh = function() {
 		var x = this.textPadding();
 		var y = 0;
-		var width = this.contents.width - this.textPadding() * 2;
+		var width = this.contents.width - 100;
 		var actor = $gameParty.members()[this._index];
 		this._name = actor.name();
 		this.contents.clear();
 		this.drawActorName(actor, x, y);
 		this.drawActorHp(actor, x, y + this.lineHeight(), width);
-		var i = 2;
 		if(mpBar) {
-			this.drawActorMp(actor, x, y + (this.lineHeight() * i), width);
-			i += 1;
+			this.drawActorMp(actor, x, y + (this.lineHeight() * 2), width);
 		}
-		if(tpBar) this.drawActorTp(actor, x, y + (this.lineHeight() * i), width);
+		if(tpBar) this.drawActorTp(actor, x, y + (this.lineHeight() * 3), width);
+		this.drawActorHor(actor, 470, this.lineHeight(), 75);
 		this._double = true;
 	};
 	var _Window_HPWindow_update = Window_HPWindow.prototype.update;
@@ -455,6 +429,23 @@
 		this.refresh();
 		Window_Base.prototype.open.call(this);
 	};
+	Window_Base.prototype.drawActorHor = function(actor, x, y, width) {
+        width = width || 96;
+        var color1 = this.HorGaugeColor1();
+        var color2 = this.HorGaugeColor2();
+        this.drawVerticalGauge(x + 30, y, width, $gameVariables.value(5)/100, color1, color2);
+        this.changeTextColor(this.systemColor());
+        this.drawText("Horny", x + 25, y, 60);
+        this.changeTextColor(this.normalColor());
+        this.drawText($gameVariables.value(5) + "%", x + 25, y + width - 5, 60, 'center');
+    };
+	Window_Base.prototype.drawVerticalGauge = function(x, y, height, rate, color1, color2) {
+        var fillH = Math.floor(height * rate);
+        var gaugeX = x;
+        var gaugeY = y + this.lineHeight() - 8;
+        this.contents.fillRect(gaugeX, gaugeY, 50, height, this.gaugeBackColor());
+        this.contents.gradientFillRect(gaugeX, gaugeY + height - fillH, 50, fillH, color1, color2, true);
+    };
 	function Window_SVBattler() {
 		this.initialize.apply(this, arguments);
 	}

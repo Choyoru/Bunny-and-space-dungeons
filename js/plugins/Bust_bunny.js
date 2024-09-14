@@ -1,0 +1,116 @@
+//=============================================================================
+// ItemBook.js
+//=============================================================================
+
+/*:
+ * @plugindesc Displays detailed statuses of items.
+ * @author Choyoru
+ *
+ * @param Unknown Data
+ * @desc The index name for an unknown item.
+ * @default ??????
+ */
+
+(function() {
+
+    window.showbust = function(x,y,exp) {
+        var image = [];
+        var base = "Emma1_";
+        var i = 0;
+
+        var equips = $gameActors.actor(1).equips();
+        var underwear = "";
+        var gloves = "";
+        var boots = "";
+        var clothes = "";
+
+        var armors = equips.filter(function(equip) {
+            return equip && DataManager.isArmor(equip);
+        });
+        var armorIds = armors.map(function(armor) {
+            if(armor.etypeId == 3){
+                clothes = $dataArmors[armor.baseItemId].meta.Name;  
+            }
+            if(armor.etypeId == 4){
+                underwear = $dataArmors[armor.baseItemId].meta.Name;
+            }
+            if(armor.etypeId == 5){
+                gloves = $dataArmors[armor.baseItemId].meta.Name;
+            }
+            if(armor.etypeId == 6){
+                boots = $dataArmors[armor.baseItemId].meta.Name;
+            }
+            //return armor;
+        });
+        //console.log("IDs des armures équipées : ", armorIds);
+        
+        image[i] = new Sprite();
+        image[i].bitmap = ImageManager.loadPicture(base + 'hairback1');
+		image[i].x = x;
+		image[i].y = y; 
+        
+        i++;
+        image[i] = new Sprite();
+        image[i].bitmap = ImageManager.loadPicture(base + 'base1');
+		image[i].x = x;
+		image[i].y = y; 
+
+        if(underwear && underwear != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + underwear);
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
+        if(gloves && gloves != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + gloves + "_L");
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
+        if(boots && boots != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + boots);
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
+        if(clothes && clothes != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + clothes);
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
+        if(gloves && gloves != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + gloves + "_R");
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
+        if(!exp){
+            exp = "face1";
+        }
+        i++;
+        image[i] = new Sprite();
+        image[i].bitmap = ImageManager.loadPicture(base + exp);
+		image[i].x = x;
+		image[i].y = y; 
+
+        i++;
+        image[i] = new Sprite();
+        image[i].bitmap = ImageManager.loadPicture(base + 'hair1');
+		image[i].x = x;
+		image[i].y = y; 
+
+        return image;
+    };
+
+})();
