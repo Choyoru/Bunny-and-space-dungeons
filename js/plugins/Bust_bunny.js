@@ -1,21 +1,18 @@
 //=============================================================================
-// ItemBook.js
+// Bust_Bunny.js
 //=============================================================================
 
 /*:
- * @plugindesc Displays detailed statuses of items.
+ * @plugindesc Displays Bunny Bust.
  * @author Choyoru
  *
- * @param Unknown Data
- * @desc The index name for an unknown item.
- * @default ??????
  */
 
 (function() {
 
     window.showbust = function(x,y,exp) {
         var image = [];
-        var base = "Emma1_";
+        var base = $gameVariables.value(4) + "_";
         var i = 0;
 
         var equips = $gameActors.actor(1).equips();

@@ -1,10 +1,27 @@
+//=============================================================================
+// Choyoru - Bunny Overlay
+// Bunny_overlay.js
+ /*:
+ * @plugindesc v1.00
+ * Bunny Overlay.
+ * @author Choyoru
+ * 
+ * @help
+ * ============================================================================
+ * Introduction
+ * ============================================================================
+ * overclose(); for close overlay.
+ * overopen(); for open overlay.
+ * 
+ * note for no overlay in this map : 
+ * <Overlay:hidden>
+ */
+
 (function() {
     // Créer une nouvelle classe de fenêtre personnalisée
 
     var Overlay_left;
     var Overlay_right;
-    var x = 35;
-	var y = 0;
     var str_dur;
 
     function Window_OverlayLeft() {
@@ -132,6 +149,9 @@
             this.changeTextColor(this.systemColor());
             this.drawText(item.name, x + 50, y, width);
             this.drawCurrentAndMax(dur, item.durMax, x + 110, y, width, color1, color2);
+        }
+        else{
+            this.drawText("----------", x + 50, y, width);
         }
     };
     Window_Base.prototype.durGaugeColor1 = function() {
