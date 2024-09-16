@@ -19,11 +19,12 @@
         var i = 0;
 
         var equips = $gameActors.actor(1).equips();
+
+        /*
         var underwear = "";
         var gloves = "";
         var boots = "";
         var clothes = "";
-
         var armors = equips.filter(function(equip) {
             return equip && DataManager.isArmor(equip);
         });
@@ -40,9 +41,9 @@
             if(armor.etypeId == 6){
                 boots = $dataArmors[armor.baseItemId].meta.Name;
             }
-            //return armor;
+            return armor;
         });
-        //console.log("IDs des armures équipées : ", armorIds);
+        console.log("IDs des armures équipées : ", armorIds);*/
         
         image[i] = new Sprite();
         image[i].bitmap = ImageManager.loadPicture(base + 'hairback1');
@@ -55,42 +56,42 @@
 		image[i].x = x;
 		image[i].y = y; 
 
-        if(underwear && underwear != ""){
+        if(equips[3] && equips[3] != ""){
             i++;
             image[i] = new Sprite();
-            image[i].bitmap = ImageManager.loadPicture(base + underwear);
+            image[i].bitmap = ImageManager.loadPicture(base + equips[3].meta.Name);
             image[i].x = x;
             image[i].y = y; 
         }
 
-        if(gloves && gloves != ""){
+        if(equips[4] && equips[4] != ""){
             i++;
             image[i] = new Sprite();
-            image[i].bitmap = ImageManager.loadPicture(base + gloves + "_L");
+            image[i].bitmap = ImageManager.loadPicture(base + equips[4].meta.Name + "_L");
             image[i].x = x;
             image[i].y = y; 
         }
 
-        if(boots && boots != ""){
+        if(equips[5] && equips[5] != ""){
             i++;
             image[i] = new Sprite();
-            image[i].bitmap = ImageManager.loadPicture(base + boots);
+            image[i].bitmap = ImageManager.loadPicture(base + equips[5].meta.Name);
             image[i].x = x;
             image[i].y = y; 
         }
 
-        if(clothes && clothes != ""){
+        if(equips[2] && equips[2] != ""){
             i++;
             image[i] = new Sprite();
-            image[i].bitmap = ImageManager.loadPicture(base + clothes);
+            image[i].bitmap = ImageManager.loadPicture(base + equips[2].meta.Name);
             image[i].x = x;
             image[i].y = y; 
         }
 
-        if(gloves && gloves != ""){
+        if(equips[4] && equips[4] != ""){
             i++;
             image[i] = new Sprite();
-            image[i].bitmap = ImageManager.loadPicture(base + gloves + "_R");
+            image[i].bitmap = ImageManager.loadPicture(base + equips[4].meta.Name + "_R");
             image[i].x = x;
             image[i].y = y; 
         }

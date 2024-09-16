@@ -5,6 +5,7 @@
     var Overlay_right;
     var x = 35;
 	var y = 0;
+    var str_dur;
 
     function Window_OverlayLeft() {
         this.initialize.apply(this, arguments);
@@ -33,52 +34,111 @@
     Window_OverlayLeft.prototype.refresh = function() {
         // Efface l'ancien contenu de la fenêtre
         this.contents.clear();
-        this.drawText(text, 0, 0, this.contentsWidth(), 'center');
-        showbust(x,y).forEach((element) => this.addChild(element));
+
+        var x = 0; 
+        var y = 0; 
+        var width = 265;
+        var actor = $gameActors.actor(1);
+
+        this.drawText(actor.name(), x, y, this.contentsWidth(), 'center');
+        showbust(x + 30,y + 20).forEach((element) => this.addChild(element));
+        this.drawActorHp(actor, x, y + 570, width);
+        this.drawActorMp(actor, x, y + 620, width);
     };
     Window_OverlayRight.prototype.refresh = function() {
         // Efface l'ancien contenu de la fenêtre
         this.contents.clear();
-        console.log($gameMap);
-        this.drawText($gameMap.displayName(), 0, 0, this.contentsWidth(), 'center');
+
+        var x = 0; 
+        var y = 0; 
+        var width = 150;
+        var equips = $gameActors.actor(1).equips();
+
+        console.log(equips);
+        if(equips[2]){
+            str_dur = equips[3].durability;
+            equips[3].durability = -1;
+        }
+        else if(equips[3].durability == -1){
+            equips[3].durability = str_dur;
+        }
+
+        this.drawText($gameMap.displayName(), x, y, this.contentsWidth(), 'center');
+        this.drawItemDur(equips[0], x, y + 50, width);
+        this.drawItemDur(equips[2], x, y + 100, width);
+        this.drawItemDur(equips[3], x, y + 150, width);
+        this.drawItemDur(equips[4], x, y + 200, width);
+        this.drawItemDur(equips[5], x, y + 250, width);
     };
 
     // Ajout de la fenêtre à la scène de la carte
     var _Scene_Map_start = Scene_Map.prototype.start;
     Scene_Map.prototype.start = function() {
-        _Scene_Map_start.call(this);
+            _Scene_Map_start.call(this);
 
-        // Créer une instance de la fenêtre (dimensions 300x600)
-        Overlay_left = new Window_OverlayLeft(0, 0, 300, 720);
-        Overlay_right = new Window_OverlayRight(980, 0, 300, 720);
+            var overlayHidden = $dataMap.meta && $dataMap.meta.Overlay === 'hidden';
 
-        // Ajouter la fenêtre à la scène actuelle
-        this.addWindow(Overlay_left);
-        this.addWindow(Overlay_right);
+            if (!overlayHidden) {
+            // Créer une instance de la fenêtre (dimensions 300x600)
+                Overlay_left = new Window_OverlayLeft(0, 0, 300, 720);
+                Overlay_right = new Window_OverlayRight(980, 0, 300, 720);
+
+                // Ajouter la fenêtre à la scène actuelle
+                this.addWindow(Overlay_left);
+                this.addWindow(Overlay_right);
+            }
     };
 
-    window.overopenclose = function() {
+    window.overclose = function() {
         if(Overlay_left){
-            if (Overlay_left.visible == true) {
-                Overlay_left.visible = false;
-                Overlay_right.visible = false;
-            }
-            else{
-                Overlay_left.visible = true;
-                Overlay_right.visible = true;
-            }
+            Overlay_left.close();
+            Overlay_right.close();
         }
     };
-    window.overclose = function() {
+    window.overopen = function() {
+        if(Overlay_left){
+            Overlay_left.open();
+            Overlay_right.open();
+        }
+    };
+    window.overhidden = function() {
         if(Overlay_left){
             Overlay_left.visible = false;
             Overlay_right.visible = false;
         }
     };
-    window.overopen = function() {
+    window.overvisible = function() {
         if(Overlay_left){
             Overlay_left.visible = true;
             Overlay_right.visible = true;
         }
+    };
+
+    Window_Base.prototype.drawItemDur = function(item, x, y, width) {
+        if(item){
+            var color1 = this.durGaugeColor1();
+            var color2 = this.durGaugeColor2();
+            var rate;
+            var dur = item.durability;
+            if(dur == -1){
+                rate = 1;
+                dur = "---";
+            }else{
+                rate = dur / item.durMax;
+            }
+
+            this.drawIcon(item.baseItemIconIndex, x, y);
+            this.drawGauge(x + 50, y, width + 60, rate, color1, color2);
+            this.changeTextColor(this.systemColor());
+            this.drawText(item.name, x + 50, y, width);
+            this.drawCurrentAndMax(dur, item.durMax, x + 110, y, width, color1, color2);
+        }
+    };
+    Window_Base.prototype.durGaugeColor1 = function() {
+        return this.textColor(8);
+    };
+    
+    Window_Base.prototype.durGaugeColor2 = function() {
+        return this.textColor(7);
     };
 })();

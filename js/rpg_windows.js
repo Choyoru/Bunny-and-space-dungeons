@@ -3935,14 +3935,12 @@ Window_ChoiceList.prototype.isOkTriggered = function() {
 Window_ChoiceList.prototype.callOkHandler = function() {
     $gameMessage.onChoice(this.index());
     this._messageWindow.terminateMessage();
-    overopenclose();
     this.close();
 };
 
 Window_ChoiceList.prototype.callCancelHandler = function() {
     $gameMessage.onChoice($gameMessage.choiceCancelType());
     this._messageWindow.terminateMessage();
-    overopenclose();
     this.close();
 };
 

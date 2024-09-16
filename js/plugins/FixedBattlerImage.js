@@ -93,9 +93,8 @@
                     if (!battlespritearray[i]) {
                         battlespritearray[i] = new Sprite();
                         battlespritearray[i].x = -105;
-                        battlespritearray[i].y = -600;
+                        battlespritearray[i].y = -550;
                         this.addChild(battlespritearray[i]);
-                        console.log(battlespritearray[i]);
                     }
                     battlespritearray[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);
                     this._fixedBattlerSprite = battlespritearray;

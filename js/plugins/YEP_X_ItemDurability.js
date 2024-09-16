@@ -666,6 +666,8 @@ Yanfly.Param.IDurColor = {
     rate1: Number(Yanfly.Parameters['1% Durability']),
 };
 
+var obj;
+
 //=============================================================================
 // DataManager
 //=============================================================================
@@ -688,7 +690,7 @@ DataManager.isDatabaseLoaded = function() {
 
 DataManager.processIDurNotetags1 = function(group) {
   for (var n = 1; n < group.length; n++) {
-    var obj = group[n];
+    obj = group[n];
     var notedata = obj.note.split(/[\r\n]+/);
 
     obj.durability = Yanfly.Param.IDurDefaultDur;
@@ -1515,6 +1517,24 @@ Yanfly.Util.displayError = function(e, code, message) {
     }
   }
 };
+
+window.repairallarmor = function() {
+  var equips = $gameActors.actor(1).equips();
+  var armors = equips.filter(function(equip) {
+      return equip && DataManager.isArmor(equip);
+  });
+
+  armors.forEach((element) => element.durability = element.durMax);
+}
+
+window.repairallweapon = function() {
+  var equips = $gameActors.actor(1).equips();
+  var weapon = equips.filter(function(equip) {
+      return equip && DataManager.isWeapon(equip);
+  });
+
+  weapon.forEach((element) => element.durability = element.durMax);
+}
 
 //=============================================================================
 // End of File
