@@ -21,10 +21,11 @@
 (function() {
     var min = 41;
     var max = 61;
-    var easy_enc = [1,1,1,1,1,2,2,3,3,3,0,0,0,0,0];
-    var normal_enc = [1,1,1,1,1,1,1,2,2,3,3,3,0,0,0];
-    var hard_enc = [1,1,1,1,1,1,1,1,1,1,1,2,2,3,3,3,3,0,0,0];
-    var hell_enc = [1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,3,3,3,3,3];
+    var easy_enc = [1,1,1,1,1];
+    var normal_enc = [1,1,1,1,1,1,1];
+    var hard_enc = [1,1,1,1,1,1,1,1,1,1,1];
+    var hell_enc = [1,1,1,1,1,1,1,1,1,1,1,1,1];
+    var curios = [2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     function shuffle(array) {
         let currentIndex = array.length;
@@ -45,6 +46,8 @@
     window.encounter = function(lvl) {
         let arr;
 
+        shuffle(curios);
+
         if(lvl <= 0){
             arr = easy_enc;
         }
@@ -57,6 +60,13 @@
         else{
             arr = hell_enc;
         }
+
+        for(let i = arr.length; i < 30; i++){
+            arr[i] = curios[i];
+        }
+
+        console.log(arr);
+
         shuffle(arr);
 
         for(let i = 0; i < arr.length; i++){
