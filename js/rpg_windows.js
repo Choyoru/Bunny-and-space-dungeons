@@ -2228,6 +2228,8 @@ Window_SkillList.prototype.drawSkillCost = function(skill, x, y, width) {
 };
 
 Window_SkillList.prototype.updateHelp = function() {
+    $gameVariables.setValue(7,this._actor.atk);
+    $gameVariables.setValue(8,this._actor.mat);
     this.setHelpWindowItem(this.item());
 };
 
@@ -2597,7 +2599,12 @@ Window_Status.prototype.drawParameters = function(x, y) {
         this.changeTextColor(this.systemColor());
         this.drawText(TextManager.param(paramId), x, y2, 160);
         this.resetTextColor();
-        this.drawText(this._actor.param(paramId), x + 160, y2, 60, 'right');
+        if(i < 4){
+            this.drawText(this._actor.param(paramId) + "%", x + 175, y2, 60, 'right');
+        }
+        else{
+            this.drawText(this._actor.param(paramId), x + 160, y2, 60, 'right');
+        }
     }
 };
 

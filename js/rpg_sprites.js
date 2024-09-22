@@ -11,6 +11,59 @@ function Sprite_Base() {
     this.initialize.apply(this, arguments);
 }
 
+function getFixedBattlerImage() {
+    var image = [];
+    var BaseSprite = $gameVariables.value(4) + "_";
+    var i = 0;
+    var exp;
+    var equips = $gameActors.actor(1).equips();
+
+    if(BaseSprite==0){
+        BaseSprite = "Emma1";
+    }
+
+    image[i] = BaseSprite + 'hairback1';
+    i++;
+    image[i] = BaseSprite + 'base1';
+    
+    if(equips[3] && equips[3] != ""){
+        i++;
+        image[i] = BaseSprite + equips[3].meta.Name;
+    }
+
+    if(equips[4] && equips[4] != ""){
+        i++;
+        image[i] = BaseSprite + equips[4].meta.Name + "_L";
+    }
+
+    if(equips[5] && equips[5] != ""){
+        i++;
+        image[i] = BaseSprite + equips[5].meta.Name; 
+    }
+
+    if(equips[2] && equips[2] != ""){
+        i++;
+        image[i] = BaseSprite + equips[2].meta.Name;
+    }
+
+    if(equips[4] && equips[4] != ""){
+        i++;
+        image[i] = BaseSprite + equips[4].meta.Name + "_R";
+    }
+
+    if(!exp){
+        exp = "face1";
+    }
+    i++;
+    image[i] = BaseSprite + exp;
+
+    i++;
+    image[i] = BaseSprite + 'hair1';
+    
+    return image;
+    
+}
+
 Sprite_Base.prototype = Object.create(Sprite.prototype);
 Sprite_Base.prototype.constructor = Sprite_Base;
 

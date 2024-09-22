@@ -16,31 +16,6 @@
         var i = 0;
 
         var equips = $gameActors.actor(1).equips();
-
-        /*
-        var underwear = "";
-        var gloves = "";
-        var boots = "";
-        var clothes = "";
-        var armors = equips.filter(function(equip) {
-            return equip && DataManager.isArmor(equip);
-        });
-        var armorIds = armors.map(function(armor) {
-            if(armor.etypeId == 3){
-                clothes = $dataArmors[armor.baseItemId].meta.Name;  
-            }
-            if(armor.etypeId == 4){
-                underwear = $dataArmors[armor.baseItemId].meta.Name;
-            }
-            if(armor.etypeId == 5){
-                gloves = $dataArmors[armor.baseItemId].meta.Name;
-            }
-            if(armor.etypeId == 6){
-                boots = $dataArmors[armor.baseItemId].meta.Name;
-            }
-            return armor;
-        });
-        console.log("IDs des armures équipées : ", armorIds);*/
         
         image[i] = new Sprite();
         image[i].bitmap = ImageManager.loadPicture(base + 'hairback1');

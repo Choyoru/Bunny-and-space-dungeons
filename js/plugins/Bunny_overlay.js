@@ -71,7 +71,6 @@
         var width = 150;
         var equips = $gameActors.actor(1).equips();
 
-        console.log(equips);
         if(equips[2]){
             str_dur = equips[3].durability;
             equips[3].durability = -1;

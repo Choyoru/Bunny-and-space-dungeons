@@ -4,119 +4,94 @@
  */
 
 (function() {
-    var parameters = PluginManager.parameters('FixedBattlerImage');
-    
     function getFixedBattlerImage() {
         var image = [];
-        var BaseSprite = $gameVariables.value(4);
-        var equips = $gameActors.actor(1).equips();
-        var underwear = "";
-        var gloves = "";
-        var boots = "";
-        var clothes = "";
+        var BaseSprite = $gameVariables.value(4) + "_";
         var i = 0;
         var exp;
-
-        var armors = equips.filter(function(equip) {
-            return equip && DataManager.isArmor(equip);
-        });
-        var armorIds = armors.map(function(armor) {
-            if(armor.etypeId == 3){
-                clothes = $dataArmors[armor.baseItemId].meta.Name;  
-            }
-            if(armor.etypeId == 4){
-                underwear = $dataArmors[armor.baseItemId].meta.Name;
-            }
-            if(armor.etypeId == 5){
-                gloves = $dataArmors[armor.baseItemId].meta.Name;
-            }
-            if(armor.etypeId == 6){
-                boots = $dataArmors[armor.baseItemId].meta.Name;
-            }
-        });
+        var equips = $gameActors.actor(1).equips();
 
         if(BaseSprite==0){
             BaseSprite = "Emma1";
         }
 
-        image[i] = BaseSprite + '_' + 'hairback1';
+        image[i] = BaseSprite + 'hairback1';
         i++;
-        image[i] = BaseSprite + '_' + 'base1';
+        image[i] = BaseSprite + 'base1';
         
-        if(underwear && underwear != ""){
+        if(equips[3] && equips[3] != ""){
             i++;
-            image[i] = BaseSprite + '_' + underwear;
+            image[i] = BaseSprite + equips[3].meta.Name;
         }
 
-        if(gloves && gloves != ""){
+        if(equips[4] && equips[4] != ""){
             i++;
-            image[i] = BaseSprite + '_' + gloves + "_L";
+            image[i] = BaseSprite + equips[4].meta.Name + "_L";
         }
 
-        if(boots && boots != ""){
+        if(equips[5] && equips[5] != ""){
             i++;
-            image[i] = BaseSprite + '_' + boots; 
+            image[i] = BaseSprite + equips[5].meta.Name; 
         }
 
-        if(clothes && clothes != ""){
+        if(equips[2] && equips[2] != ""){
             i++;
-            image[i] = BaseSprite + '_' + clothes;
+            image[i] = BaseSprite + equips[2].meta.Name;
         }
 
-        if(gloves && gloves != ""){
+        if(equips[4] && equips[4] != ""){
             i++;
-            image[i] = BaseSprite + '_' + gloves + "_R";
+            image[i] = BaseSprite + equips[4].meta.Name + "_R";
         }
 
         if(!exp){
             exp = "face1";
         }
         i++;
-        image[i] = BaseSprite + '_' + exp;
+        image[i] = BaseSprite + exp;
 
         i++;
-        image[i] = BaseSprite + '_' + 'hair1';
+        image[i] = BaseSprite + 'hair1';
         
         return image;
         
     }
 
+    var actor_img;
+
     var _Sprite_Actor_setBattler = Sprite_Actor.prototype.setBattler;
     Sprite_Actor.prototype.setBattler = function(battler) {
         _Sprite_Actor_setBattler.call(this, battler);
         if (battler && battler.actor) {
+            var battlespritearray = [];
             var actor = battler.actor();
             var fixedBattlerImage = getFixedBattlerImage(actor);
-            var battlespritearray = [];
-            if (fixedBattlerImage) {
-                for (let i = 0; i < fixedBattlerImage.length; i++) {
-                    if (!battlespritearray[i]) {
-                        battlespritearray[i] = new Sprite();
-                        battlespritearray[i].x = -105;
-                        battlespritearray[i].y = -550;
-                        this.addChild(battlespritearray[i]);
+            if(actor_img != fixedBattlerImage){
+                this.removeChild(this._fixedBattlerSprite);
+                this._fixedBattlerSprite = null;
+                actor_img = fixedBattlerImage;
+                if (fixedBattlerImage) {
+                    for (let i = 0; i < fixedBattlerImage.length; i++) {
+                        if (!battlespritearray[i]) {
+                            battlespritearray[i] = new Sprite();
+                            battlespritearray[i].x = -105;
+                            battlespritearray[i].y = -550;
+                            this.addChild(battlespritearray[i]);
+                        }
+                        battlespritearray[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);
+                        this._fixedBattlerSprite = battlespritearray;
                     }
-                    battlespritearray[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);
-                    this._fixedBattlerSprite = battlespritearray;
-                    /*if (!this._fixedBattlerSprite[i]) {
-                        this._fixedBattlerSprite[i] = new Sprite();
-                        this._fixedBattlerSprite[i].x = -105;
-                        this._fixedBattlerSprite[i].y = -600;
-                        this.addChild(this._fixedBattlerSprite[i]);
-                        console.log(this._fixedBattlerSprite[i]);
+                    if (this._battlerSprite) {
+                        this._battlerSprite.visible = false;
                     }
-                    this._fixedBattlerSprite[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);*/
-                }
-                if (this._battlerSprite) {
-                    this._battlerSprite.visible = false;
-                }
-            } else {
-                if (this._fixedBattlerSprite) {
-                    this.removeChild(this._fixedBattlerSprite);
-                    this._fixedBattlerSprite = null;
-                }
-                if (this._battlerSprite) {
-                    this._battlerSprite.visible = true;
+                } else {
+                    if (this._fixedBattlerSprite) {
+                        this.removeChild(this._fixedBattlerSprite);
+                        this._fixedBattlerSprite = null;
+                    }
+                    if (this._battlerSprite) {
+                        this._battlerSprite.visible = true;
+                    }
                 }
             }
         }
