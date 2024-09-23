@@ -236,6 +236,14 @@ Window_Base.prototype.tpCostColor = function() {
     return this.textColor(29);
 };
 
+Window_Base.prototype.horGaugeColor1 = function() {
+    return this.textColor(6);
+};
+
+Window_Base.prototype.horGaugeColor2 = function() {
+    return this.textColor(14);
+};
+
 Window_Base.prototype.pendingColor = function() {
     return this.windowskin.getPixel(120, 120);
 };
@@ -487,6 +495,10 @@ Window_Base.prototype.tpColor = function(actor) {
     return this.normalColor();
 };
 
+Window_Base.prototype.horColor = function(actor) {
+    return this.normalColor();
+};
+
 Window_Base.prototype.drawActorCharacter = function(actor, x, y) {
     this.drawCharacter(actor.characterName(), actor.characterIndex(), x, y);
 };
@@ -579,6 +591,17 @@ Window_Base.prototype.drawActorTp = function(actor, x, y, width) {
     this.drawText(TextManager.tpA, x, y, 44);
     this.changeTextColor(this.tpColor(actor));
     this.drawText(actor.tp, x + width - 64, y, 64, 'right');
+};
+
+Window_Base.prototype.drawActorHorL = function(actor, x, y, width) {
+    width = width || 186;
+    var color1 = this.horGaugeColor1();
+    var color2 = this.horGaugeColor2();
+    this.drawGauge(x, y, width, $gameVariables.value(5)/100, color1, color2);
+    this.changeTextColor(this.systemColor());
+    this.drawText("Horny", x, y, 44);
+    this.drawCurrentAndMax($gameVariables.value(5), 100, x, y, width,
+                           this.horColor(actor), this.normalColor());
 };
 
 Window_Base.prototype.drawActorSimpleStatus = function(actor, x, y, width) {
@@ -5517,7 +5540,7 @@ Window_BattleStatus.prototype.gaugeAreaRect = function(index) {
 };
 
 Window_BattleStatus.prototype.gaugeAreaWidth = function() {
-    return 330;
+    return 600;
 };
 
 Window_BattleStatus.prototype.drawBasicArea = function(rect, actor) {
@@ -5534,9 +5557,10 @@ Window_BattleStatus.prototype.drawGaugeArea = function(rect, actor) {
 };
 
 Window_BattleStatus.prototype.drawGaugeAreaWithTp = function(rect, actor) {
-    this.drawActorHp(actor, rect.x + 0, rect.y, 108);
-    this.drawActorMp(actor, rect.x + 123, rect.y, 96);
-    this.drawActorTp(actor, rect.x + 234, rect.y, 96);
+    this.drawActorHp(actor, rect.x + 0, rect.y, 208);
+    this.drawActorMp(actor, rect.x + 228, rect.y, 108);
+    this.drawActorTp(actor, rect.x + 356, rect.y, 108);
+    this.drawActorHorL(actor, rect.x + 484, rect.y, 108);
 };
 
 Window_BattleStatus.prototype.drawGaugeAreaWithoutTp = function(rect, actor) {

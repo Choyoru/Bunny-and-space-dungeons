@@ -60,7 +60,8 @@
         this.drawText(actor.name(), x, y, this.contentsWidth(), 'center');
         showbust(x + 30,y + 20).forEach((element) => this.addChild(element));
         this.drawActorHp(actor, x, y + 570, width);
-        this.drawActorMp(actor, x, y + 620, width);
+        this.drawActorMp(actor, x, y + 610, width);
+        this.drawActorTp(actor, x, y + 650, width);
     };
     Window_OverlayRight.prototype.refresh = function() {
         // Efface l'ancien contenu de la fenêtre
@@ -69,7 +70,9 @@
         var x = 0; 
         var y = 0; 
         var width = 150;
-        var equips = $gameActors.actor(1).equips();
+        var maxwidth = 265;
+        var actor = $gameActors.actor(1);
+        var equips = actor.equips();
 
         if(equips[2]){
             str_dur = equips[3].durability;
@@ -85,6 +88,8 @@
         this.drawItemDur(equips[3], x, y + 150, width);
         this.drawItemDur(equips[4], x, y + 200, width);
         this.drawItemDur(equips[5], x, y + 250, width);
+        this.drawActorHorL(actor, x, y + 350, maxwidth);
+        this.drawActorIcons(actor, x, y + 400);
     };
 
     // Ajout de la fenêtre à la scène de la carte
@@ -129,6 +134,11 @@
             Overlay_right.visible = true;
         }
     };
+
+    window.overRefresh = function(){
+        Overlay_left.refresh();
+        Overlay_right.refresh();
+    }
 
     Window_Base.prototype.drawItemDur = function(item, x, y, width) {
         if(item){

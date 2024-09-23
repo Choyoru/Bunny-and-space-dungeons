@@ -20,12 +20,12 @@
 
 (function() {
     var min = 41;
-    var max = 61;
+    var max = 71;
     var easy_enc = [1,1,1,1,1];
     var normal_enc = [1,1,1,1,1,1,1];
     var hard_enc = [1,1,1,1,1,1,1,1,1,1,1];
     var hell_enc = [1,1,1,1,1,1,1,1,1,1,1,1,1];
-    var curios = [2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var curios = [2,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
     function shuffle(array) {
         let currentIndex = array.length;
@@ -65,14 +65,11 @@
             arr[i] = curios[i];
         }
 
-        console.log(arr);
-
         shuffle(arr);
 
         for(let i = 0; i < arr.length; i++){
             if(i < max){
                 $gameVariables.setValue(min + i, arr[i]);
-                console.log($gameVariables.value(min + 1));
             }
         }
     };
