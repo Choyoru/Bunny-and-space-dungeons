@@ -21,5 +21,6 @@ var $plugins =
 {"name":"FixedBattlerImage","status":true,"description":"Plugin to replace SV Battler image with a fixed image from the pictures folder and to show/hide it via plugin commands.","parameters":{}},
 {"name":"Bunny_encounter","status":true,"description":"mix possible encounters on a map.","parameters":{}},
 {"name":"MrTS_EnemyPositions","status":true,"description":"Allows to change enemy positions through adding tags.","parameters":{"Spawn Rule":"True"}},
-{"name":"HIME_EndPhaseTriggers","status":true,"description":"Checks whether there are any events to run before ending the\r\nbattle.","parameters":{}}
+{"name":"HIME_EndPhaseTriggers","status":true,"description":"Checks whether there are any events to run before ending the\r\nbattle.","parameters":{}},
+{"name":"Attack_test","status":true,"description":"","parameters":{}}
 ];
