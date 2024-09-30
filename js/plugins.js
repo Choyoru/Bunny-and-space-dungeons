@@ -22,5 +22,6 @@ var $plugins =
 {"name":"Bunny_encounter","status":true,"description":"mix possible encounters on a map.","parameters":{}},
 {"name":"MrTS_EnemyPositions","status":true,"description":"Allows to change enemy positions through adding tags.","parameters":{"Spawn Rule":"True"}},
 {"name":"HIME_EndPhaseTriggers","status":true,"description":"Checks whether there are any events to run before ending the\r\nbattle.","parameters":{}},
-{"name":"Attack_test","status":true,"description":"","parameters":{}}
+{"name":"Attack_test","status":true,"description":"","parameters":{}},
+{"name":"CustomActorStatus","status":true,"description":"Remplace la page de statut par une page affichant les statistiques.","parameters":{}}
 ];

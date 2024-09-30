@@ -15,6 +15,10 @@
         var base = $gameVariables.value(4) + "_";
         var i = 0;
 
+        if(!exp && $gameVariables.value(11) != 0){
+            exp = $gameVariables.value(11);
+        }
+
         var equips = $gameActors.actor(1).equips();
         
         image[i] = new Sprite();

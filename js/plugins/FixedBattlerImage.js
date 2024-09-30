@@ -11,6 +11,10 @@
         var exp;
         var equips = $gameActors.actor(1).equips();
 
+        if($gameVariables.value(11) != 0){
+            exp = $gameVariables.value(11);
+        }
+
         if(BaseSprite==0){
             BaseSprite = "Emma1";
         }
