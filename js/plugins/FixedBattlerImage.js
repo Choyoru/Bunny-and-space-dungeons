@@ -65,32 +65,50 @@
 
     var _Sprite_Actor_setBattler = Sprite_Actor.prototype.setBattler;
     Sprite_Actor.prototype.setBattler = function(battler) {
-        _Sprite_Actor_setBattler.call(this, battler);
+    _Sprite_Actor_setBattler.call(this, battler);
+        
         if (battler && battler.actor) {
-            var battlespritearray = [];
             var actor = battler.actor();
             var fixedBattlerImage = getFixedBattlerImage(actor);
-            if(actor_img != fixedBattlerImage){
-                this.removeChild(this._fixedBattlerSprite);
-                this._fixedBattlerSprite = null;
+            
+            // Si l'image du battler a changé
+            if (actor_img !== fixedBattlerImage) {
                 actor_img = fixedBattlerImage;
+                
+                // Si on a des images à mettre à jour
                 if (fixedBattlerImage) {
-                    for (let i = 0; i < fixedBattlerImage.length; i++) {
-                        if (!battlespritearray[i]) {
-                            battlespritearray[i] = new Sprite();
-                            battlespritearray[i].x = -105;
-                            battlespritearray[i].y = -550;
-                            this.addChild(battlespritearray[i]);
-                        }
-                        battlespritearray[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);
-                        this._fixedBattlerSprite = battlespritearray;
+                    // Initialise le tableau battlespritearray s'il est vide
+                    if (!this._fixedBattlerSprite) {
+                        this._fixedBattlerSprite = [];
                     }
+
+                    // Ajuster le nombre de sprites en fonction du nombre d'images
+                    while (this._fixedBattlerSprite.length > fixedBattlerImage.length) {
+                        let spriteToRemove = this._fixedBattlerSprite.pop();
+                        this.removeChild(spriteToRemove); // Retirer l'excédent
+                    }
+
+                    for (let i = 0; i < fixedBattlerImage.length; i++) {
+                        // Créer un nouveau sprite si nécessaire
+                        if (!this._fixedBattlerSprite[i]) {
+                            let sprite = new Sprite();
+                            sprite.x = -105;
+                            sprite.y = -550;
+                            this._fixedBattlerSprite[i] = sprite;
+                            this.addChild(sprite); // Ajouter uniquement si nouveau
+                        }
+                        // Mettre à jour l'image du sprite
+                        this._fixedBattlerSprite[i].bitmap = ImageManager.loadPicture(fixedBattlerImage[i]);
+                    }
+
+                    // Cacher l'ancien sprite de battler
                     if (this._battlerSprite) {
                         this._battlerSprite.visible = false;
                     }
                 } else {
+                    // Si aucune image de battler fixe n'est disponible, restaurer l'état par défaut
                     if (this._fixedBattlerSprite) {
-                        this.removeChild(this._fixedBattlerSprite);
+                        this._fixedBattlerSprite.forEach(sprite => this.removeChild(sprite));
                         this._fixedBattlerSprite = null;
                     }
                     if (this._battlerSprite) {
