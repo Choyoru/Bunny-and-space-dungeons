@@ -90,4 +90,17 @@
         return image;
     };
 
+    window.nbrequip = function() {
+        var equips = $gameActors.actor(1).equips();
+        var nbr = 0;
+
+        for (let i = 2; i < equips.length; i++) {
+            if(equips[i] && equips[i] != ""){
+                nbr++;
+            }
+        }
+
+        return nbr;
+    }
+
 })();
