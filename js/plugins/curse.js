@@ -29,7 +29,7 @@
     };
 
     window.calculpurity = function() {
-        $gameVariables.value(24) = 100 - Math.round(($gameVariables.value(25) + $gameVariables.value(26) + $gameVariables.value(27) + $gameVariables.value(28)) / 4);
+        $gameVariables.setValue(24, 100 - Math.round(($gameVariables.value(25) + $gameVariables.value(26) + $gameVariables.value(27) + $gameVariables.value(28)) / 4));
     }
 
     window.Exibitionism = function() {
