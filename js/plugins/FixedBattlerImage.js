@@ -36,6 +36,9 @@
         if(equips[5] && equips[5] != ""){
             i++;
             image[i] = BaseSprite + equips[5].meta.Name; 
+        }else{
+            i++;
+            image[i] = BaseSprite + "boots0";
         }
 
         if(equips[2] && equips[2] != ""){

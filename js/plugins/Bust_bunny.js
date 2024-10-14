@@ -32,6 +32,7 @@
 		image[i].x = x;
 		image[i].y = y; 
 
+
         if(equips[3] && equips[3] != ""){
             i++;
             image[i] = new Sprite();
@@ -52,6 +53,12 @@
             i++;
             image[i] = new Sprite();
             image[i].bitmap = ImageManager.loadPicture(base + equips[5].meta.Name);
+            image[i].x = x;
+            image[i].y = y; 
+        }else{
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + "boots0");
             image[i].x = x;
             image[i].y = y; 
         }
