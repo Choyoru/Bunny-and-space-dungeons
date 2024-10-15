@@ -22,7 +22,6 @@
 
     var Overlay_left;
     var Overlay_right;
-    var str_dur;
 
     function Window_OverlayLeft() {
         this.initialize.apply(this, arguments);
@@ -74,22 +73,23 @@
         var actor = $gameActors.actor(1);
         var equips = actor.equips();
 
-        if(equips[2]){
-            str_dur = equips[3].durability;
+        if(equips[2] && equips[3].durability != -1){
+            $gameVariables.setValue(12, equips[3].durability);
             equips[3].durability = -1;
         }
-        else if(equips[3].durability == -1){
-            equips[3].durability = str_dur;
+        else if(equips[3].durability == -1 && !equips[2]){
+            equips[3].durability = $gameVariables.value(12);
         }
 
         this.drawText($gameMap.displayName(), x, y, this.contentsWidth(), 'center');
         this.drawItemDur(equips[0], x, y + 50, width);
-        this.drawItemDur(equips[2], x, y + 100, width);
-        this.drawItemDur(equips[3], x, y + 150, width);
-        this.drawItemDur(equips[4], x, y + 200, width);
-        this.drawItemDur(equips[5], x, y + 250, width);
-        this.drawActorHorL(actor, x, y + 350, maxwidth);
-        this.drawActorIcons(actor, x, y + 400);
+        this.drawItemDur(equips[1], x, y + 100, width);
+        this.drawItemDur(equips[2], x, y + 150, width);
+        this.drawItemDur(equips[3], x, y + 200, width);
+        this.drawItemDur(equips[4], x, y + 250, width);
+        this.drawItemDur(equips[5], x, y + 300, width);
+        this.drawActorHorL(actor, x, y + 400, maxwidth);
+        this.drawActorIcons(actor, x, y + 450);
     };
 
     // Ajout de la fenêtre à la scène de la carte
@@ -138,6 +138,13 @@
     window.overRefresh = function(){
         Overlay_left.refresh();
         Overlay_right.refresh();
+    }
+
+    window.resetdurunderwear = function(){
+        var actor = $gameActors.actor(1);
+        var equips = actor.equips();
+        equips[3].durability = $gameVariables.value(12);
+        $gameVariables.setValue(12, 0);
     }
 
     Window_Base.prototype.drawItemDur = function(item, x, y, width) {

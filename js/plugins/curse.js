@@ -10,10 +10,11 @@
 
     // Remplacer la méthode qui se déclenche au début du tour
     const _BattleManager_startTurn = BattleManager.startTurn;
+    const _BattleManager_endTurn = BattleManager.endTurn;
+
     BattleManager.startTurn = function() {
         // Appeler la fonction de base
         _BattleManager_startTurn.call(this);
-        console.log("test");
         // Parcourir les membres de l'équipe
         $gameParty.members().forEach(function(actor) {
             // Parcourir les états du personnage
@@ -26,6 +27,24 @@
                 }
             });
         });
+    };
+
+    BattleManager.endTurn = function() {
+        // Appel de la fonction de fin de tour originale
+        _BattleManager_endTurn.call(this);
+
+        var actor = $gameActors.actor(1);
+        var equips = actor.equips();
+        console.log("end turn");
+        
+        // Ajout du script qui s'exécute à la fin du tour
+        if(equips[2] && equips[3].durability != -1){
+            $gameVariables.setValue(12, equips[3].durability);
+            equips[3].durability = -1;
+        }
+        else if(equips[3].durability == -1 && !equips[2]){
+            equips[3].durability = $gameVariables.value(12);
+        }
     };
 
     window.calculpurity = function() {
