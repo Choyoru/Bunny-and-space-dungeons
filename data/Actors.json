@@ -1,4 +1,4 @@
 [
 null,
-{"id":1,"battlerName":"Emma1_1","characterIndex":0,"characterName":"sakura","classId":1,"equips":[1,0,2,3,4,5],"faceIndex":0,"faceName":"","traits":[{"code":52,"dataId":6,"value":0}],"initialLevel":1,"maxLevel":10,"name":"Emma","nickname":"Emma","note":"\n","profile":"\\V[10]"}
+{"id":1,"battlerName":"Emma1_1","characterIndex":0,"characterName":"sakura","classId":1,"equips":[1,1,2,3,4,5],"faceIndex":0,"faceName":"","traits":[{"code":52,"dataId":6,"value":0},{"code":52,"dataId":5,"value":1}],"initialLevel":1,"maxLevel":10,"name":"Emma","nickname":"Emma","note":"\n","profile":"\\V[10]"}
 ]
