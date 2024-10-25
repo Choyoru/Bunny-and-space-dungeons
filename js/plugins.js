@@ -24,5 +24,6 @@ var $plugins =
 {"name":"HIME_EndPhaseTriggers","status":true,"description":"Checks whether there are any events to run before ending the\r\nbattle.","parameters":{}},
 {"name":"Attack_test","status":true,"description":"","parameters":{}},
 {"name":"CustomActorStatus","status":true,"description":"Remplace la page de statut par une page affichant les statistiques.","parameters":{}},
-{"name":"curse","status":true,"description":"Ce pluging gère les malédictions et les variables accosiée.","parameters":{}}
+{"name":"curse","status":true,"description":"Ce pluging gère les malédictions et les variables accosiée.","parameters":{}},
+{"name":"mood","status":true,"description":"Ce pluging gère l'humeur des personnages.","parameters":{}}
 ];

@@ -33,9 +33,11 @@
         // Appel de la fonction de fin de tour originale
         _BattleManager_endTurn.call(this);
 
+        console.log("end turn");
+
         var actor = $gameActors.actor(1);
         var equips = actor.equips();
-        console.log("end turn");
+        calculmood();
         
         // Ajout du script qui s'exécute à la fin du tour
         if(equips[2] && equips[3].durability != -1){

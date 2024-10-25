@@ -63,10 +63,12 @@
     };
 
     Window_Status.prototype.drawsthorny = function(x, y) {
+        calculmood();
+        txtmood();
         var lineHeight = this.lineHeight();
         this.changeTextColor(this.systemColor());
 
-        this.drawsthornygauge($gameVariables.value(5), "Horny", x, y + lineHeight * 0, 290);
+        this.drawsthornygauge($gameVariables.value(13), "Mood", x, y + lineHeight * 0, 290);
         this.drawsthornygauge($gameVariables.value(24), "Purity", x, y + lineHeight * 1, 290);
         this.drawsthornygauge($gameVariables.value(25), "Submission", x, y + lineHeight * 2, 290);
         this.drawsthornygauge($gameVariables.value(26), "Exibitionism", x, y + lineHeight * 3, 290);
