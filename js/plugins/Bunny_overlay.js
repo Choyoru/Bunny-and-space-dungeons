@@ -73,12 +73,14 @@
         var actor = $gameActors.actor(1);
         var equips = actor.equips();
 
-        if(equips[2] && equips[3].durability != -1){
-            $gameVariables.setValue(12, equips[3].durability);
-            equips[3].durability = -1;
-        }
-        else if(equips[3].durability == -1 && !equips[2]){
-            equips[3].durability = $gameVariables.value(12);
+        if(equips[3]){
+            if(equips[2] && equips[3].durability != -1){
+                $gameVariables.setValue(12, equips[3].durability);
+                equips[3].durability = -1;
+            }
+            else if(equips[3].durability == -1 && !equips[2]){
+                equips[3].durability = $gameVariables.value(12);
+            }
         }
 
         this.drawText($gameMap.displayName(), x, y, this.contentsWidth(), 'center');
@@ -143,7 +145,9 @@
     window.resetdurunderwear = function(){
         var actor = $gameActors.actor(1);
         var equips = actor.equips();
-        equips[3].durability = $gameVariables.value(12);
+        if(equips[3]){
+            equips[3].durability = $gameVariables.value(12);
+        }
         $gameVariables.setValue(12, 0);
     }
 

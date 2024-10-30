@@ -898,7 +898,7 @@ for(let i = 1; i <= 20; i++) {
 }
 
 _.loadImage = function(filename, hue) {
-	return ImageManager.loadBitmap('img/SumRndmDde/menu/', filename, hue, true);
+	return ImageManager.loadBitmap('img/pictures/', filename, hue, true);
 };
 
 _.loadAllImages = function() {
