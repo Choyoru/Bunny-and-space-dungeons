@@ -2251,8 +2251,6 @@ Window_SkillList.prototype.drawSkillCost = function(skill, x, y, width) {
 };
 
 Window_SkillList.prototype.updateHelp = function() {
-    $gameVariables.setValue(7,this._actor.atk);
-    $gameVariables.setValue(8,this._actor.mat);
     this.setHelpWindowItem(this.item());
 };
 

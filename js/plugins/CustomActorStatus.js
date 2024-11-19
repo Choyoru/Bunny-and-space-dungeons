@@ -53,12 +53,7 @@
             this.changeTextColor(this.systemColor());
             this.drawText(TextManager.param(paramId), x, y2, 160);
             this.resetTextColor();
-            if(i < 4){
-                this.drawText(this._actor.param(paramId) + "%", x + 175, y2, 60, 'right');
-            }
-            else{
-                this.drawText(this._actor.param(paramId), x + 160, y2, 60, 'right');
-            }
+            this.drawText(this._actor.param(paramId), x + 160, y2, 60, 'right');
         }
     };
 
