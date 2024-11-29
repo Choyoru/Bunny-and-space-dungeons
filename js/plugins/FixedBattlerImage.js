@@ -46,13 +46,25 @@
             image[i] = BaseSprite + equips[2].meta.Name;
         }
 
+        if(equips[1] && equips[1] != ""){
+            i++;
+            image[i] = BaseSprite + equips[1].meta.Name;
+        }
+
+
         if(equips[4] && equips[4] != ""){
             i++;
             image[i] = BaseSprite + equips[4].meta.Name + "_R";
         }
 
         if(!exp){
-            exp = "face1";
+            if($gameVariables.value(13) < 25){
+                exp = "face4";
+            }else if($gameVariables.value(13) < 75 && $gameVariables.value(13) >= 25){
+                exp = "face3";
+            }else{
+                exp = "face1";
+            }
         }
         i++;
         image[i] = BaseSprite + exp;

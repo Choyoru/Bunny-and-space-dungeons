@@ -20,6 +20,8 @@
         }
 
         var equips = $gameActors.actor(1).equips();
+
+        console.log(equips);
         
         image[i] = new Sprite();
         image[i].bitmap = ImageManager.loadPicture(base + 'hairback1');
@@ -71,6 +73,14 @@
             image[i].y = y; 
         }
 
+        if(equips[1] && equips[1] != ""){
+            i++;
+            image[i] = new Sprite();
+            image[i].bitmap = ImageManager.loadPicture(base + equips[1].meta.Name);
+            image[i].x = x;
+            image[i].y = y; 
+        }
+
         if(equips[4] && equips[4] != ""){
             i++;
             image[i] = new Sprite();
@@ -80,7 +90,13 @@
         }
 
         if(!exp){
-            exp = "face1";
+            if($gameVariables.value(13) < 25){
+                exp = "face4";
+            }else if($gameVariables.value(13) < 75 && $gameVariables.value(13) >= 25){
+                exp = "face3";
+            }else{
+                exp = "face1";
+            }
         }
         i++;
         image[i] = new Sprite();
