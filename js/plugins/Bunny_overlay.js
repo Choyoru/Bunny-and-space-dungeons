@@ -9,6 +9,8 @@
     var buttonMenu;
     var buttonSkill;
     var buttonToggle;
+    var hidden;
+    
 
     function Window_OverlayLeft() {
         this.initialize.apply(this, arguments);
@@ -117,27 +119,83 @@
     };
     Window_ButtonMenu.prototype.refresh = function() {
         this.contents.clear();
-        this.drawText("Menu", 0, -5, this.contentsWidth(), 'center');
+        this.drawIcon(1604, 0, 0);
     };
     Window_ButtonSkill.prototype.refresh = function() {
         this.contents.clear();
-        this.drawText("Spell", 0, -5, this.contentsWidth(), 'center');
+        var actor = $gameActors.actor(1);
+        var sp_icon = 2;
+        var sp_name = "Spell";
+        
+        if (actor && actor._classId === 1) {
+            sp_icon = $dataSkills[19].battleDisplayIcon;
+            sp_name = $dataSkills[19].battleDisplayText;
+        }
+        else if (actor && actor._classId === 2) {
+            sp_icon = $dataSkills[34].battleDisplayIcon;
+            sp_name = $dataSkills[34].battleDisplayText;
+        }
+
+        this.drawIcon(sp_icon, 0, 0);
+        this.drawText(sp_name, 40, 0, this.contentsWidth()-40, 'left');
     };
     Window_ButtonToggleOverlay.prototype.refresh = function() {
         this.contents.clear();
-        this.drawText("Hide", 0, -5, this.contentsWidth(), 'center');
+        if ((Overlay_left && Overlay_left.isClosed()) && (Overlay_right && Overlay_right.isClosed())){
+            this.drawIcon(1606, 0, 0);
+        }else{
+            this.drawIcon(1605, 0, 0);
+        }
+    };
+
+    // Ajout d'une vérification globale pour bloquer les clics sur les boutons
+    var _Scene_Map_processMapTouch = Scene_Map.prototype.processMapTouch;
+    Scene_Map.prototype.processMapTouch = function() {
+        // Bloque le déplacement si le clic est sur un bouton
+        if (this.isClickOnButton()) {
+            $gameTemp.clearDestination(); // Supprime la destination du clic
+            return;
+        }
+        _Scene_Map_processMapTouch.call(this);
+    };
+
+    Scene_Map.prototype.isClickOnButton = function() {
+        if (hidden == false) {
+            return (
+                (buttonMenu && buttonMenu.isTouchedInsideFrame()) ||
+                (buttonSkill && buttonSkill.isTouchedInsideFrame()) ||
+                (buttonToggle && buttonToggle.isTouchedInsideFrame())
+            );
+        }
+        else{
+            return (
+                (buttonMenu && buttonMenu.isTouchedInsideFrame())
+            );
+        }
+    };
+
+    // Ajout de la méthode isTouchedInsideFrame aux boutons
+    Window_Base.prototype.isTouchedInsideFrame = function() {
+        return (
+            TouchInput.x >= this.x &&
+            TouchInput.x <= this.x + this.width &&
+            TouchInput.y >= this.y &&
+            TouchInput.y <= this.y + this.height
+        );
     };
 
     // Gestion des clics pour chaque bouton
     Window_ButtonMenu.prototype.update = function() {
         Window_Base.prototype.update.call(this);
-        console.log(this.x);
-        console.log(TouchInput.x);
-        console.log(this.width);
         if (TouchInput.isTriggered() &&
             TouchInput.x >= this.x && TouchInput.x <= this.x + this.width &&
             TouchInput.y >= this.y && TouchInput.y <= this.y + this.height) {
+            
+            // Bloque les clics pour éviter le déplacement
+            SoundManager.playOk();
             SceneManager.push(Scene_Menu);
+            Window_MenuCommand.initCommandPosition();
+            $gameTemp.clearDestination();
         }
     };
 
@@ -146,16 +204,45 @@
         if (TouchInput.isTriggered() &&
             TouchInput.x >= this.x && TouchInput.x <= this.x + this.width &&
             TouchInput.y >= this.y && TouchInput.y <= this.y + this.height) {
+
+            SoundManager.playOk();
+            Window_MenuCommand.initCommandPosition();
+            $gameTemp.clearDestination();
+
             var actor = $gameActors.actor(1);
             if (actor && actor._classId === 1) {
-                var skillId = 19; // ID de la compétence à utiliser
-                var action = new Game_Action(actor);
-                action.setSkill(skillId);
-                var target = $gameParty.members()[0];
-                action.apply(target);
-                overclose();
-                AudioManager.playSe({ name: "Item3", volume: 10, pitch: 100, pan: 0 });
-                $gameMessage.add(actor.name() + " use " + $dataSkills[skillId].name + " !");
+                if(actor.mp >= actor.mmp){
+                    overclose();
+                    AudioManager.playSe({ name: "Buzzer1", volume: 15, pitch: 100, pan: 0 });
+                    $gameMessage.add(actor.name() + "'s MP are already at maximum !");
+                }
+                else{
+                    var skillId = 19; // ID de la compétence à utiliser
+                    var action = new Game_Action(actor);
+                    action.setSkill(skillId);
+                    var target = $gameParty.members()[0];
+                    action.apply(target);
+                    overclose();
+                    AudioManager.playSe({ name: "Item3", volume: 15, pitch: 100, pan: 0 });
+                    $gameMessage.add(actor.name() + " use " + $dataSkills[skillId].name + " !");
+                }
+                this._waitForMessage = true;
+            }else if (actor && actor._classId === 2) {
+                if($gameActors.actor(1).isStateAffected(20)){
+                    overclose();
+                    AudioManager.playSe({ name: "Buzzer1", volume: 15, pitch: 100, pan: 0 });
+                    $gameMessage.add(actor.name() + " has already loaded her weapon !");
+                }
+                else{
+                    var skillId = 34; // ID de la compétence à utiliser
+                    var action = new Game_Action(actor);
+                    action.setSkill(skillId);
+                    var target = $gameParty.members()[0];
+                    action.apply(target);
+                    overclose();
+                    AudioManager.playSe({ name: "Item3", volume: 15, pitch: 100, pan: 0 });
+                    $gameMessage.add(actor.name() + " use " + $dataSkills[skillId].name + " !");
+                }
                 this._waitForMessage = true;
             }
         }
@@ -172,6 +259,12 @@
         if (TouchInput.isTriggered() &&
             TouchInput.x >= this.x && TouchInput.x <= this.x + this.width &&
             TouchInput.y >= this.y && TouchInput.y <= this.y + this.height) {
+
+                // Bloque les clics pour éviter le déplacement
+                SoundManager.playOk();
+                Window_MenuCommand.initCommandPosition();
+                $gameTemp.clearDestination();
+
                 if ((Overlay_left && Overlay_left.isClosed()) && (Overlay_right && Overlay_right.isClosed())){
                     overopen();
                 }else{
@@ -185,20 +278,23 @@
     Scene_Map.prototype.start = function() {
         _Scene_Map_start.call(this);
         var overlayHidden = $dataMap.meta && $dataMap.meta.Overlay === 'hidden';
-
         if (!overlayHidden) {
             Overlay_left = new Window_OverlayLeft(0, 0, 300, 720);
-            Overlay_right = new Window_OverlayRight(980, 0, 300, 655);
-            buttonSkill = new Window_ButtonSkill(980, 655, 100, 65);
-            buttonToggle = new Window_ButtonToggleOverlay(1080, 655, 100, 65);
+            Overlay_right = new Window_OverlayRight(980, 70, 300, 650);
+            buttonSkill = new Window_ButtonSkill(980, 0, 160, 70);
+            buttonToggle = new Window_ButtonToggleOverlay(1140, 0, 70, 70);
             
             this.addWindow(Overlay_left);
             this.addWindow(Overlay_right);
             this.addWindow(buttonSkill);
             this.addWindow(buttonToggle);
+
+            hidden = false;
+        }else{
+            hidden = true;
         }
 
-        buttonMenu = new Window_ButtonMenu(1180, 655, 100, 65);
+        buttonMenu = new Window_ButtonMenu(1210, 0, 70, 70);
         this.addWindow(buttonMenu);
     };
 
