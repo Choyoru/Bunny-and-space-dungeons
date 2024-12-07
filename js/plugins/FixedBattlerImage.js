@@ -91,7 +91,8 @@
                 actor_img = fixedBattlerImage;
                 
                 // Si on a des images à mettre à jour
-                if (fixedBattlerImage) {
+                console.log("gameSwitches.value(9):"+$gameSwitches.value(9));
+                if (fixedBattlerImage && $gameSwitches.value(9) == false) {
                     // Initialise le tableau battlespritearray s'il est vide
                     if (!this._fixedBattlerSprite) {
                         this._fixedBattlerSprite = [];
